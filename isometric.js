@@ -82,9 +82,11 @@ const projectFilledRect = (rect, color) => {
   const { x, y, z, width, height } = rect;
 
   for (let i = rect.y; i < y + height; i++) {
-    const p1 = project({ x, y: i, z });
-    const p2 = project({ x: x + width, y: i, z });
-    drawLine(p1, p2, color);
+    for (let j = 0; j < 2; j++) {
+      const p1 = project({ x, y: i, z: z + j });
+      const p2 = project({ x: x + width, y: i, z: z + j });
+      drawLine(p1, p2, color);
+    }
   }
 };
 
@@ -99,15 +101,17 @@ const projectFilledBox = (rect, zHeight, color) => {
   const { x, y, z, width, height } = rect;
 
   for (let i = z; i < z + zHeight; i++) {
-    // Right
-    let from = project({ x: x + width, y, z: i });
-    let to = project({ x: x + width, y: y + height, z: i });
-    drawLine(from, to, color);
+    for (let j = 0; j < 2; j++) {
+      // Right
+      let from = project({ x: x + width, y, z: i + j });
+      let to = project({ x: x + width, y: y + height, z: i + j });
+      drawLine(from, to, color);
 
-    // Bottom
-    from = project({ x, y: y + height, z: i });
-    to = project({ x: x + width, y: y + height, z: i });
-    drawLine(from, to, color);
+      // Bottom
+      from = project({ x, y: y + height, z: i + j });
+      to = project({ x: x + width, y: y + height, z: i + j });
+      drawLine(from, to, color);
+    }
   }
 
   // Top

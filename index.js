@@ -35,7 +35,7 @@ const exampleScene = (width, height) => {
  * Main function.
  */
 const main = () => {
-  Isometric.init('black', { x: 200, y: 600 });
+  Isometric.init('black', { x: 220, y: 400 });
   Isometric.renderScene(exampleScene);
 
   // Allow to draw images from file in index.html
