@@ -19,17 +19,23 @@ const readFileDataURL = file =>
  * @param {number} height - Height of the scene.
  */
 const exampleScene = (width, height) => {
-  const box = { x: 150, y: 50, z: 0, width: 80, height: 80 };
-  Isometric.filledBox(box, 50, 'red');
+  let size = 200;
+  let z = 0;
+  while (size > 5) {
+    let box = { x: 50, y: 50, z, width: size, height: size };
+    Isometric.filledBox(box, size, 'red');
+    Isometric.box(box, size, 'black');
 
-  const rect = { x: 150, y: 50, z: 20, width: 40, height: 40 };
-  Isometric.filledRect(rect, 'yellow');
+    z += size;
+    size /= 2;
+  }
 };
 
 /**
  * Main function.
  */
 const main = () => {
+  Isometric.init('black', { x: 200, y: 600 });
   Isometric.renderScene(exampleScene);
 
   // Allow to draw images from file in index.html
