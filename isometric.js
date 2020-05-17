@@ -20,6 +20,26 @@ const drawLine = (from, to, color) => {
 };
 
 /**
+ * Draw a filled polygon (because we can now on Canvas) which is a lot
+ * cheaper than rastering lots of lines.
+ *
+ * @param {Object} tl - { x, y } top left point.
+ * @param {Object} tr - { x, y } top right point.
+ * @param {Object} br - { x, y } bottom right point.
+ * @param {Object} bl - { x, y } bottom left point.
+ */
+const drawFilledPoly = (tl, tr, br, bl, color) => {
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.moveTo(tl.x, tl.y);
+  ctx.lineTo(tr.x, tr.y);
+  ctx.lineTo(br.x, br.y);
+  ctx.lineTo(bl.x, bl.y);
+  ctx.closePath();
+  ctx.fill();
+};
+
+/**
  * Project a coordinate into isometric space.
  *
  * @param {Object} vec - { x, y, z } to project.
@@ -81,13 +101,13 @@ const projectRect = (rect, color) => {
 const projectFilledRect = (rect, color) => {
   const { x, y, z, width, height } = rect;
 
-  for (let i = rect.y; i < y + height; i++) {
-    for (let j = 0; j < 2; j++) {
-      const p1 = project({ x, y: i, z: z + j });
-      const p2 = project({ x: x + width, y: i, z: z + j });
-      drawLine(p1, p2, color);
-    }
-  }
+  drawFilledPoly(
+    project({ x, y, z }),
+    project({ x: x + width, y, z }),
+    project({ x: x + width, y: y + height, z }),
+    project({ x, y: y + height, z }),
+    color,
+  );
 };
 
 /**
@@ -100,19 +120,23 @@ const projectFilledRect = (rect, color) => {
 const projectFilledBox = (rect, zHeight, color) => {
   const { x, y, z, width, height } = rect;
 
-  for (let i = z; i < z + zHeight; i++) {
-    for (let j = 0; j < 2; j++) {
-      // Right
-      let from = project({ x: x + width, y, z: i + j });
-      let to = project({ x: x + width, y: y + height, z: i + j });
-      drawLine(from, to, color);
+  // LHS
+  drawFilledPoly(
+    project({ x, y: y + height, z }),
+    project({ x: x + width, y: y + height, z }),
+    project({ x: x + width, y: y + height, z: z + zHeight }),
+    project({ x, y: y + height, z: z + zHeight }),
+    color,
+  );
 
-      // Bottom
-      from = project({ x, y: y + height, z: i + j });
-      to = project({ x: x + width, y: y + height, z: i + j });
-      drawLine(from, to, color);
-    }
-  }
+  // RHS
+  drawFilledPoly(
+    project({ x: x + width, y: y + height, z }),
+    project({ x: x + width, y, z }),
+    project({ x: x + width, y, z: z + zHeight }),
+    project({ x: x + width, y: y + height, z: z + zHeight }),
+    color,
+  );
 
   // Top
   projectFilledRect({ x, y, z: z + zHeight - 1, width, height }, color);
