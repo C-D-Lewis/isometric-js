@@ -22,9 +22,9 @@ const exampleScene = (width, height) => {
   let size = 200;
   let z = 0;
   while (size > 5) {
-    let box = { x: 50, y: 50, z, width: size, height: size };
-    Isometric.filledBox(box, size, 'red');
-    Isometric.box(box, size, 'black');
+    let box = { x: 50, y: 50, z, width: size, height: size, depth: size };
+    Isometric.filledBox(box, 'red');
+    Isometric.box(box, 'black');
 
     z += size;
     size /= 2;

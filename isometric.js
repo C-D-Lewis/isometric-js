@@ -113,19 +113,18 @@ const projectFilledRect = (rect, color) => {
 /**
  * Draw a projected filled box.
  *
- * @param {Object} rect - { x, y, z, width, height } to draw.
- * @param {number} zHeight - Z height of the box.
+ * @param {Object} rect - { x, y, z, width, height, depth } to draw.
  * @param {string} color - Color to draw.
  */
-const projectFilledBox = (rect, zHeight, color) => {
-  const { x, y, z, width, height } = rect;
+const projectFilledBox = (rect, color) => {
+  const { x, y, z, width, height, depth } = rect;
 
   // LHS
   drawFilledPoly(
     project({ x, y: y + height, z }),
     project({ x: x + width, y: y + height, z }),
-    project({ x: x + width, y: y + height, z: z + zHeight }),
-    project({ x, y: y + height, z: z + zHeight }),
+    project({ x: x + width, y: y + height, z: z + depth }),
+    project({ x, y: y + height, z: z + depth }),
     color,
   );
 
@@ -133,24 +132,23 @@ const projectFilledBox = (rect, zHeight, color) => {
   drawFilledPoly(
     project({ x: x + width, y: y + height, z }),
     project({ x: x + width, y, z }),
-    project({ x: x + width, y, z: z + zHeight }),
-    project({ x: x + width, y: y + height, z: z + zHeight }),
+    project({ x: x + width, y, z: z + depth }),
+    project({ x: x + width, y: y + height, z: z + depth }),
     color,
   );
 
   // Top
-  projectFilledRect({ x, y, z: z + zHeight - 1, width, height }, color);
+  projectFilledRect({ x, y, z: z + depth - 1, width, height }, color);
 };
 
 /**
  * Draw a projected box outline.
  *
- * @param {Object} rect - { x, y, z, width, height } to draw.
- * @param {number} zHeight - Z height of the box.
+ * @param {Object} rect - { x, y, z, width, height, depth } to draw.
  * @param {string} color - Color to draw.
  */
-const projectBox = (rect, zHeight, color) => {
-  const { x, y, z, width, height } = rect;
+const projectBox = (rect, color) => {
+  const { x, y, z, width, height, depth } = rect;
 
   // Bottom
   let from = project({ x: x + width, y, z });
@@ -161,19 +159,19 @@ const projectBox = (rect, zHeight, color) => {
   drawLine(from, to, color);
 
   // Top
-  projectRect({ x, y, z: z + zHeight, width, height }, color);
+  projectRect({ x, y, z: z + depth, width, height }, color);
 
   // Sides
   from = project({ x, y: y + height, z });
-  to = project({ x, y: y + height, z: z + zHeight });
+  to = project({ x, y: y + height, z: z + depth });
   drawLine(from, to, color);
 
   from = project({ x: x + width, y: y + height, z });
-  to = project({ x: x + width, y: y + height, z: z + zHeight });
+  to = project({ x: x + width, y: y + height, z: z + depth });
   drawLine(from, to, color);
 
   from = project({ x: x + width, y, z });
-  to = project({ x: x + width, y, z: z + zHeight });
+  to = project({ x: x + width, y, z: z + depth });
   drawLine(from, to, color);
 };
 
