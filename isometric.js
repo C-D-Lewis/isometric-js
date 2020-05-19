@@ -73,22 +73,22 @@ const projectRect = (rect, color) => {
 
   // Top
   let from = project(rect);
-  let to = project({ x: x + width, y, z });
+  let to = project({ x: x + width, y, z: z - 1 });
   drawLine(from, to, color);
 
   // Left
-  from = project({ x: x + width, y, z });
-  to = project({ x: x + width, y: y + height, z });
+  from = project({ x: x + width, y, z: z - 1 });
+  to = project({ x: x + width, y: y + height, z: z - 1 });
   drawLine(from, to, color);
 
   // Bottom
-  from = project({ x, y: y + height, z });
-  to = project({ x: x + width, y: y + height, z });
+  from = project({ x, y: y + height, z: z - 1 });
+  to = project({ x: x + width, y: y + height, z: z - 1 });
   drawLine(from, to, color);
 
   // Right
   from = project(rect);
-  to = project({ x, y: y + height, z });
+  to = project({ x, y: y + height, z: z - 1 });
   drawLine(from, to, color);
 };
 
