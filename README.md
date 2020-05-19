@@ -31,3 +31,8 @@ Isometric.renderScene((width, height) => {
   Isometric.filledBox(box, boxHeight, 'blue');
 });
 ```
+
+The `block-world` example is a port of
+[`pebble-hacks/block-world`](https://github.com/pebble-hacks/block-world).
+
+![screenshot](block-world.png)
