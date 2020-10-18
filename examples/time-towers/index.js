@@ -80,6 +80,8 @@ const exampleScene = (width, height) => {
 const main = () => {
   Isometric.init('#55AAAA', { x: 200, y: 50 });
   Isometric.renderScene(exampleScene);
+
+  setInterval(() => Isometric.renderScene(exampleScene), 1000);
 };
 
 main();
